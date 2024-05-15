@@ -1,0 +1,165 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# **Spaceship Titanic**
+
+```{r}
+data1 <- read_csv('sample_submission.csv')
+data2 <- read_csv('test.csv')
+
+
+```
+
+Join Data1 and Data2
+
+```{r}
+df <- merge(x=data1 , y =data2 , by.x = "PassengerId", by.y = "PassengerId")
+View(df)
+```
+
+Creating column name group from PassengerId
+
+```{r}
+data <- mutate(df, group = substr(
+PassengerId,1,4))
+
+
+View(data)
+
+```
+
+Counting the occurrences of each value in the Transported column.
+
+```{r}
+value <-  count(data, Transported)
+value
+
+#No one from this dataset has been transported to another dimension.
+```
+
+```{r}
+ggplot(value, aes(x="", y=n, fill=Transported)) +
+  geom_bar(stat="identity", width=1) +
+  coord_polar("y", start=0)
+```
+
+Checking if there is any TRUE value
+
+```{r}
+trnsported_true <- filter(data, Transported == TRUE)
+trnsported_true
+```
+
+The oldest person aboard the Titanic
+
+```{r}
+
+View(arrange(data, desc(Age)) %>%
+  slice(1))
+```
+
+Which group has the oldest average age with at least 2 members?
+
+```{r}
+
+
+group_age <- data %>%
+  group_by(group)%>%
+  summarise(
+    mean_age = mean(Age, na.rm=TRUE),
+    n=n()
+  )%>%
+  filter(n>=2)%>%
+  arrange(desc(mean_age))%>%
+  slice(1)
+print(group_age)
+
+#3580 group has the oldest average age of 64 with at least 2 members		
+```
+
+find the vips
+
+```{r}
+
+Vip <- filter(data, VIP == TRUE)
+View(Vip)
+```
+
+Most popular home planet for Vips
+
+```{r}
+group_by(Vip, HomePlanet) %>%
+  summarise(
+    n = n()
+  )
+#most comman Home planet for Vips are Eruopa with 46 people
+```
+
+Which group has the highest average bill for luxury amenities?
+
+```{r}
+luxury_bill <- data %>%
+  group_by(VIP)%>%
+  summarise(
+    agv.RS_bill = mean(RoomService, na.rm=TRUE),
+    avg.Food_bill = mean(FoodCourt, na.rm =TRUE),
+    avg.spa_bill =mean(Spa,na.rm=TRUE),
+    avg.SM_bill = mean(ShoppingMall,na.rm=TRUE),
+    avg.VR_bill = mean(VRDeck, na.rm = TRUE)
+  )
+
+View(luxury_bill)
+
+#Vip has the highest bill in luxury amanities.
+```
+
+What is the avg age for different homeland
+
+```{r}
+group_by(data, HomePlanet)%>%
+  summarise(avg.age = mean(Age,na.rm=TRUE),
+            count = n())
+
+#avg age for different homeland 
+#Earth	25.74617	 	
+#Europa	34.15886 	
+#Mars	29.76281	 
+```
+
+Where are most people from Earth traveling to
+
+```{r}
+group_by(data, HomePlanet, Destination) %>%
+summarise(
+          count =n()) %>%
+  filter(HomePlanet == 'Earth')%>%
+  arrange(desc(count)) %>%
+  slice(1)
+
+# most people from Earth traveling toTRAPPIST-1e
+```
+
+What do people spend the most money on in the year 2912
+
+```{r}
+summarise(data,
+    agv.RS_bill = mean(RoomService, na.rm=TRUE),
+    avg.Food_bill = mean(FoodCourt, na.rm =TRUE),
+    avg.spa_bill =mean(Spa,na.rm=TRUE),
+    avg.SM_bill = mean(ShoppingMall,na.rm=TRUE),
+    avg.VR_bill = mean(VRDeck, na.rm = TRUE)
+  )
+
+#What do people spend the most money on in the year 2912  avg.Food_bill
+
+
+```
+
+```{r}
+ggplot(data =  data) +
+  geom_point(mapping = aes(x = Age, y = FoodCourt, color= HomePlanet))
+
+#The graph shows that people start spending money in the food court around the age #of 17, and people from Europe are the heaviest spenders on food.
+```
