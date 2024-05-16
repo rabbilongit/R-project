@@ -163,3 +163,23 @@ ggplot(data =  data) +
 
 #The graph shows that people start spending money in the food court around the age #of 17, and people from Europe are the heaviest spenders on food.
 ```
+
+## Hypothesis
+
+-   No one from this dataset has been transported to another dimension.
+
+-    The oldest person on the Titanic was 79 years old."
+
+-   "Group 3580 has the oldest average age of 64 with at least 2 members."
+
+-   "The most common home planet for VIPs is Europa, with 46 people."
+
+-   "VIPs have the highest bill in luxury amenities."
+
+-   "The average age for different homelands is: Earth 25.74617, Europa 34.15886, Mars 29.76281."
+
+-   "Most people from Earth are traveling to TRAPPIST-1e."
+
+-   "People spend the most money on average on food bills in the year 2912."
+
+-   "The graph shows that people start spending money in the food court around the age of 17, and people from Europe are the heaviest spenders on food.
